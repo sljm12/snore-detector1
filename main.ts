@@ -2,9 +2,16 @@ input.onButtonPressed(Button.A, function () {
     basic.clearScreen()
     basic.showNumber(numtimes)
     basic.pause(2000)
+    showDots()
 })
 input.onSound(DetectedSound.Loud, function () {
-    numtimes += 1
+    if (input.lightLevel() < 50) {
+        numtimes += 1
+        showDots()
+    }
+})
+input.onButtonPressed(Button.B, function () {
+    numtimes = 0
     showDots()
 })
 function showDots () {
@@ -26,8 +33,8 @@ function showDots () {
 }
 let numLines = 0
 let numtimes = 0
-input.setSoundThreshold(SoundThreshold.Loud, 50)
+input.setSoundThreshold(SoundThreshold.Loud, 75)
 numtimes = 0
 basic.forever(function () {
-    radio.setGroup(1)
+    serial.writeValue("light", input.lightLevel())
 })
